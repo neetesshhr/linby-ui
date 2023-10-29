@@ -1,0 +1,6 @@
+node_modules
+inventory.yml
+*terraform*
+instance_info.txt
+initialAdminPassword
+__pycache__/
