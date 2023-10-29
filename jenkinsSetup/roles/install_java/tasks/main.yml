@@ -1,0 +1,6 @@
+---
+
+- include: java_deb.yml
+  when: ansible_os_family == "Debian"
+- include: java_rpm.yml
+  when: ansible_os_family == "RedHat"

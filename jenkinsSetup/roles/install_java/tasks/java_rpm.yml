@@ -1,0 +1,10 @@
+---
+- name: Update the cache
+  yum:
+    name: "*"
+    state: latest
+    
+- name: Corretto 17 java
+  yum:
+    name: java-17-amazon-corretto-headless
+    state: present

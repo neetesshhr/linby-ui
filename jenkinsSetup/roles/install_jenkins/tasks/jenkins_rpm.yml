@@ -1,0 +1,39 @@
+    - name: Ensure Jenkins Yum repo and GPG key are present
+      yum_repository:
+        name: 'jenkins'
+        description: 'Jenkins Repository'
+        baseurl: 'https://pkg.jenkins-ci.org/redhat/'
+        gpgcheck: yes
+        gpgkey: 'https://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key'
+        enabled: yes
+      tags: jenkins
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: latest
+        disable_gpg_check: yes
+      tags: jenkins
+
+    - name: Start Jenkins
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
+      tags: jenkins
+      
+    - name: Fetch Jenkins initialAdminPassword
+      fetch:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+        dest: ./initialAdminPassword
+        flat: yes
+
+    - name: Wait for Jenkins to fully start
+      uri:
+        url: "http://localhost:8080/login"
+        status_code: 200
+        timeout: 5
+      register: result
+      retries: 60
+      delay: 10
+      until: result.status == 200
+      ignore_errors: yes

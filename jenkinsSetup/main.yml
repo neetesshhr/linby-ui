@@ -1,0 +1,20 @@
+---
+- hosts: linux
+  become: true
+ 
+  tasks:
+    
+    - name: Install Java
+      include_role:
+        name: install_java
+        
+    - name: Install git
+      include_role:
+        name: install_git
+    
+    - name: Install Jenkins
+      include_role:
+        name: install_jenkins
+    
+    
+    

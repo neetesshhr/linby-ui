@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execute Script</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        #executeForm {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+            white-space: pre-wrap;
+            height: 200px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="executeForm">
+        <input type="text" name="pubkey" placeholder="Public Key" required>
+        <input type="text" name="privkey" placeholder="Private Key" required>
+        <select name="distro" required>
+            <option value="" disabled selected>Select Distribution</option>
+            <option value="amazon-linux2">Amazon Linux 2</option>
+            <option value="ubuntu">Ubuntu</option>
+        </select>
+        <button type="button" onclick="executeScript()">Execute</button>
+    </form>
+    <pre id="output"></pre>
+
+    <script>
+        let ws;
+
+        function executeScript() {
+            const form = document.getElementById('executeForm');
+            const pubkey = form.querySelector('[name="pubkey"]').value;
+            const privkey = form.querySelector('[name="privkey"]').value;
+            const distro = form.querySelector('[name="distro"]').value;
+
+            ws = new WebSocket('ws://localhost:3000');
+
+            ws.onopen = () => {
+                ws.send(JSON.stringify({ pubkey, privkey, distro }));
+            };
+
+            ws.onmessage = (event) => {
+    const output = document.getElementById('output');
+    output.textContent += event.data + '\n';
+    
+    // Autoscroll
+    output.scrollTop = output.scrollHeight;
+};
+        }
+    </script>
+</body>
+
+</html>

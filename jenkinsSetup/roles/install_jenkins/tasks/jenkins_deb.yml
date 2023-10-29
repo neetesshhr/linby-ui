@@ -1,0 +1,35 @@
+    - name: ensure the jenkins apt repository key is installed
+      apt_key: url=https://pkg.jenkins.io/debian/jenkins.io-2023.key state=present
+        
+    - name: ensure the repository is configured
+      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+    
+    - name: Update cache
+      apt: 
+        update_cache: yes
+    
+    - name: ensure jenkins is installed
+      apt: name=jenkins state=latest
+    
+    - name: Start and enable Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Fetch Jenkins initialAdminPassword
+      fetch:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+        dest: ./initialAdminPassword
+        flat: yes
+
+    - name: Wait for Jenkins to fully start
+      uri:
+        url: "http://localhost:8080/login"
+        status_code: 200
+        timeout: 5
+      register: result
+      retries: 60
+      delay: 10
+      until: result.status == 200
+      ignore_errors: yes
