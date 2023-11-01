@@ -55,6 +55,15 @@
             height: 200px;
             overflow-y: scroll;
         }
+        .styledBox {
+    font-weight: bold;
+    color: #ffffff;  /* White text */
+    background-color: #4CAF50;  /* Green background */
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
     </style>
 </head>
 
@@ -86,13 +95,20 @@
                 ws.send(JSON.stringify({ pubkey, privkey, distro }));
             };
 
-            ws.onmessage = (event) => {
-    const output = document.getElementById('output');
-    output.textContent += event.data + '\n';
-    
-    // Autoscroll
-    output.scrollTop = output.scrollHeight;
-};
+        ws.onmessage = (event) => {
+            const output = document.getElementById('output');
+            
+            // Pattern to detect messages like "######Running ansible playbook to setup jenkins ######"
+            const pattern = /##.*?##/g;
+
+            const styledText = event.data.replace(pattern, match => `<div class="styledBox">${match}</div>`);
+            
+            output.innerHTML += styledText;
+
+            // Autoscroll
+            output.scrollTop = output.scrollHeight;
+        };
+
         }
     </script>
 </body>
