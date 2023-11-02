@@ -1,5 +1,8 @@
 ---
-- include: jenkins_deb.yml
+- name: Running jenkins in ubuntu
+  import_tasks: jenkins_deb.yml
   when: ansible_os_family == "Debian"
-- include: jenkins_rpm.yml
+
+- name: Running jenkins in Rhel
+  import_tasks: jenkins_rpm.yml
   when: ansible_os_family == "RedHat"
