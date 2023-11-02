@@ -76,6 +76,11 @@
             <option value="amazon-linux2">Amazon Linux 2</option>
             <option value="ubuntu">Ubuntu</option>
         </select>
+        <select name="appname" required>
+            <option value="" disabled selected> Select App to deploy</option>
+            <option value="Jenkins">Jenkins</option>
+            <option value="RabbitMQ">Rabbit MQ</option>
+        </select>
         <button type="button" onclick="executeScript()">Execute</button>
     </form>
     <pre id="output"></pre>
@@ -88,11 +93,12 @@
             const pubkey = form.querySelector('[name="pubkey"]').value;
             const privkey = form.querySelector('[name="privkey"]').value;
             const distro = form.querySelector('[name="distro"]').value;
+            const appname = form.querySelector('[name="appname"]').value;
 
             ws = new WebSocket('ws://localhost:3000');
 
             ws.onopen = () => {
-                ws.send(JSON.stringify({ pubkey, privkey, distro }));
+                ws.send(JSON.stringify({ pubkey, privkey, distro, appname }));
             };
 
         ws.onmessage = (event) => {
