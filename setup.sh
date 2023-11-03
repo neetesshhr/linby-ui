@@ -1,5 +1,5 @@
 #!/bin/bash
-while getopts "k:d:p:a:" opt; do
+while getopts "k:d:p:a:i:t:r:s:e:" opt; do
   case $opt in
     k)
       SSH_PRIVATE_KEY_PATH="$OPTARG"
@@ -13,6 +13,21 @@ while getopts "k:d:p:a:" opt; do
     a)
       APP_NAME="$OPTARG"
       ;;
+    i)
+      SERVERNAME="$OPTARG"
+      ;;
+    t)
+      INSTANCETYPE="$OPTARG"
+      ;;
+    r)
+      DEPLOY_REGION="$OPTARG"
+      ;;
+    s)
+      ACCESS_KEY="$OPTARG"
+      ;;
+    e)
+      SECRET_KEY="$OPTARG"
+      ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -24,8 +39,8 @@ while getopts "k:d:p:a:" opt; do
   esac
 done
 
-if [[ -z $SSH_PRIVATE_KEY_PATH ]] || [[ -z $DISTRO ]] || [[ -z $PUB_KEY ]] || [[ -z $APP_NAME ]]; then
-    echo "All -k (for key) and -d (for distro) and -pubkey (for public key) flags are required."
+if [[ -z $SSH_PRIVATE_KEY_PATH ]] || [[ -z $DISTRO ]] || [[ -z $PUB_KEY ]] || [[ -z $APP_NAME ]] || [[ -z $SERVERNAME ]] || [[ -z $INSTANCETYPE ]] || [[ -z $DEPLOY_REGION ]] || [[ -z $ACCESS_KEY ]] || [[ -z $SECRET_KEY ]]; then
+    echo "All -k (for key) and -d (for distro) and -p (for public key) flags are required."
     exit 1
 fi
 
@@ -54,7 +69,7 @@ AMI_ID=$(python3 ami_id.py -id ${DISTRO})
 echo "AMI ID is $AMI_ID"
 cd server
 terraform init
-terraform apply -var="ami_id=$AMI_ID" -var="public_key_path=$PUB_KEY" -var="instancetype=t2.micro" -var="ServerName=JenkinsMainDeployment" -var="deployregion=ap-south-1" -auto-approve
+terraform apply -var="ami_id=$AMI_ID" -var="public_key_path=$PUB_KEY" -var="instancetype=$INSTANCETYPE" -var="ServerName=$SERVERNAME" -var="deployregion=$DEPLOY_REGION" -var="access_key=$ACCESS_KEY" -var="secret_key=$SECRET_KEY" --auto-approve
 
 export EC2_IP=$(terraform output instance_public_ip)
 

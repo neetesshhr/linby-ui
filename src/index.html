@@ -69,6 +69,11 @@
 
 <body>
     <form id="executeForm">
+        <input type="text" name="accesskey", placeholder="ACCESS KEY ID of AWS" required>
+        <input type="text", name="secretkey", placeholder="SECRET KEY FOR AWS" required>
+        <input type="text", name="deployregion", placeholder="REGION to Deploy your server" required>
+        <input type="text", name="instancetype", placeholder="Instance type to deploy your Server" required>
+        <input type="text", name="servername", placeholder="Server Name", required>
         <input type="text" name="pubkey" placeholder="Public Key" required>
         <input type="text" name="privkey" placeholder="Private Key" required>
         <select name="distro" required>
@@ -94,11 +99,16 @@
             const privkey = form.querySelector('[name="privkey"]').value;
             const distro = form.querySelector('[name="distro"]').value;
             const appname = form.querySelector('[name="appname"]').value;
+            const instancetype = form.querySelector('[name="instancetype"]').value;
+            const servername = form.querySelector('[name="servername"]').value;
+            const accesskey = form.querySelector('[name="accesskey"]').value;
+            const secretkey = form.querySelector('[name="secretkey"]').value;
+            const deployregion = form.querySelector('[name="deployregion"]').value;
 
             ws = new WebSocket('ws://localhost:3000');
 
             ws.onopen = () => {
-                ws.send(JSON.stringify({ pubkey, privkey, distro, appname }));
+                ws.send(JSON.stringify({ pubkey, privkey, distro, appname, deployregion, instancetype, accesskey, secretkey, servername }));
             };
 
         ws.onmessage = (event) => {

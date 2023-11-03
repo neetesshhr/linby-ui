@@ -3,7 +3,16 @@ variable "ami_id" {
   type        = string
   default     = "ami-04f15c9c38471ac72"  
 }
+variable "access_key" {
+  description = "AWS access key"
+  type        = string
+  
+}
 
+variable "secret_key" {
+  description = "AWS SECRET key"
+  type = string
+}
 variable "deployregion" {
   description = "The region for the deployment"
   type = string
