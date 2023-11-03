@@ -21,7 +21,7 @@
             margin: 20px auto;
         }
 
-        input[type="text"],
+        input[type="text"], input[type="password"],
         select {
             width: 100%;
             padding: 10px;
@@ -30,6 +30,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
 
         button {
             background-color: #4CAF50;
@@ -69,8 +70,8 @@
 
 <body>
     <form id="executeForm">
-        <input type="text" name="accesskey", placeholder="ACCESS KEY ID of AWS" required>
-        <input type="text", name="secretkey", placeholder="SECRET KEY FOR AWS" required>
+        <input type="password" name="accesskey", placeholder="ACCESS KEY ID of AWS" required>
+        <input type="password", name="secretkey", placeholder="SECRET KEY FOR AWS" required>
         <input type="text", name="deployregion", placeholder="REGION to Deploy your server" required>
         <input type="text", name="instancetype", placeholder="Instance type to deploy your Server" required>
         <input type="text", name="servername", placeholder="Server Name", required>
