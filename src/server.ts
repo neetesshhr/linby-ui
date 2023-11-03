@@ -21,14 +21,14 @@ const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
   ws.on('message', (message) => {
-    const { pubkey, privkey, distro, appname } = JSON.parse(message.toString());
+    const { pubkey, privkey, distro, appname, servername, instancetype, deployregion, accesskey, secretkey } = JSON.parse(message.toString());
 
-    if (!pubkey || !privkey || !distro || !appname) {
-      ws.send('Error: All fields (pubkey, privkey, distro, appname) are required.');
+    if (!pubkey || !privkey || !distro || !appname || !servername || !instancetype || !deployregion || !accesskey || !secretkey) {
+      ws.send('Error: All fields (pubkey, privkey, distro, appname, servername,instancetype, deployregion, accesskey , secretkey) are required.');
       return;
     }
 
-    const scriptProcess = spawn('sh', ['./setup.sh', '-k', privkey, '-d', distro, '-p', pubkey, '-a', appname]);
+    const scriptProcess = spawn('sh', ['./setup.sh', '-k', privkey, '-d', distro, '-p', pubkey, '-a', appname, '-i' , servername, '-t', instancetype, '-r', deployregion, '-s', accesskey, '-e', secretkey]);
 
     scriptProcess.stdout.on('data', (data) => {
       ws.send(data.toString());
