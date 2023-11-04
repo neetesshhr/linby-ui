@@ -1,8 +1,12 @@
 import boto3
 import argparse
+import os
 
-def find_ami_id(choice):
-    ec2 = boto3.client('ec2')
+def find_ami_id(choice, region):
+    ec2 = boto3.client(
+        'ec2',
+        region_name = region
+        )
 
     if choice == 'amazon-linux2':
         owners = ['amazon']
@@ -42,5 +46,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Find AMI ID for Amazon Linux 2 or Ubuntu.')
     parser.add_argument('-id', type=str, required=True, choices=['amazon-linux2', 'ubuntu'],
                         help="Choose 'amazon-linux2' or 'ubuntu' to get the respective AMI ID.")
+    
+    parser.add_argument(
+        '-rg',
+        type=str,
+        required=True,
+        default=os.environ.get('AWS_DEFAULT_REGION'),
+        help='The aws region to use'
+    )
     args = parser.parse_args()
-    find_ami_id(args.id)
+    find_ami_id(args.id, args.rg)
