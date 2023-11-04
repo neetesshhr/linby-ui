@@ -64,7 +64,7 @@ echo "User set to: $EC2_USER"
 
 echo "#### Running terraform script ####"
 
-AMI_ID=$(python3 ami_id.py -id ${DISTRO})
+AMI_ID=$(python3 ami_id.py -id ${DISTRO} -rg ${DEPLOY_REGION})
 
 echo "AMI ID is $AMI_ID"
 cd server
