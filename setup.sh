@@ -119,11 +119,11 @@ case $APP_NAME in
         else
             echo "### Moving ### "
         fi
-        sleep 30
+        sleep 10
         echo "[linux]" > inventory.yml
         echo "$EC2_IP ansible_user=$EC2_USER ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_PATH" >> inventory.yml
         echo "######Running ansible playbook to setup jenkins ######"
-        sleep 30
+        sleep 10
         ansible-playbook -i inventory.yml main.yml
         rm inventory.yml
 
