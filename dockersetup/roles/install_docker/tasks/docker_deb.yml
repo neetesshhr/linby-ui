@@ -1,0 +1,49 @@
+- name: Install Docker
+  apt:
+    name: docker
+    state: latest
+  
+- name: Install prerequisites
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - ca-certificates
+      - curl
+      - gnupg
+
+- name: Create Keyrings Directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Add Docker's official GPG key
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /tmp/docker.gpg
+  register: download_gpg
+
+- name: Move and convert GPG key
+  command: gpg --dearmor -o /etc/apt/keyrings/docker.gpg < /tmp/docker.gpg
+
+- name: Set permissions for Docker GPG key
+  file:
+    path: /etc/apt/keyrings/docker.gpg
+    mode: '0644'
+  
+- name: Add the Docker repository
+  shell: >
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+
+- name: Update the package index
+  apt:
+    update_cache: yes
+
+
+- name: Install docker compose
+  apt:
+    name: docker-compose-plugin
+    state: latest
+

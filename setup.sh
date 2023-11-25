@@ -107,6 +107,27 @@ case $APP_NAME in
       "RabbitMQ")
         echo "###### RUNNING RABBITMQ SETUP NOW #####"
         ;;
+      "Docker")
+        echo "####### Running Docker and Docker compose Setup ########"
+        cd ../dockersetup
+        export EC2_IP
+        export SSH_PRIVATE_KEY_PATH
+        export EC2_USER
+        FILE="inventory.yml"
+        if [ -f "$FILE" ]; then
+            rm inventory.yml
+        else
+            echo "### Moving ### "
+        fi
+        sleep 30
+        echo "[linux]" > inventory.yml
+        echo "$EC2_IP ansible_user=$EC2_USER ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_PATH" >> inventory.yml
+        echo "######Running ansible playbook to setup jenkins ######"
+        sleep 30
+        ansible-playbook -i inventory.yml main.yml
+        rm inventory.yml
+
+      ;;
       *)
         echo "Unsupported APP_NAME value"
         exit 1
