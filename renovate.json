@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "prHeader": "LinbyUiTest",
+  "assignees": [
+    "neetesshhr"
+  ],
+  "labels": ["dependencies-testlabel"],
+  "packageRules": [
+   {
+      "matchPackagePatterns": ["eslint"],
+      "labels": ["linting"]
+    },
+    {
+      "matchPackagePatterns": ["docker"],
+      "labels": ["docker-testlabel"]
+    },
+    {
+      "matchPackagePatterns": ["jenkins"],
+      "labels": ["jenkins-testlabel"]
+    },
+    {
+      "matchPackagePatterns": ["terraform"],
+      "labels": ["terraform-testlabel"]
+    },
+    {
+      "matchPackagePatterns": ["python"],
+      "labels": ["python-testlabel"]
+    }
+  ]
+}
