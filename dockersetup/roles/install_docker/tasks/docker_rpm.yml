@@ -1,0 +1,10 @@
+- name: Install Docker
+  yum:
+    name: docker
+    state: latest
+
+
+- name: Install Docker Compose
+  yum:
+    name: docker-compose-plugin
+    state: latest

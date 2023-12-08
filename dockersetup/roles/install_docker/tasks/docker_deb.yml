@@ -1,0 +1,21 @@
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: latest
+
+- name: Install Docker compose
+  apt:
+    name: docker-compose
+    state: latest
+
+- name: Get all users
+  command: awk -F':' '{ if ($3 >= 1000 && $3 != 65534) print $1}' /etc/passwd
+  register: users
+
+- name: Add all users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items: "{{ users.stdout_lines }}"
+

@@ -1,0 +1,8 @@
+---
+- name: Running Docker in ubuntu
+  import_tasks: docker_deb.yml
+  when: ansible_os_family == "Debian"
+
+- name: Running Docker in Rhel
+  import_tasks: docker_rpm.yml
+  when: ansible_os_family == "RedHat"

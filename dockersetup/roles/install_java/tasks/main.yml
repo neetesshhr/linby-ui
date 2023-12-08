@@ -1,0 +1,9 @@
+---
+
+- name: Running java in ubuntu
+  import_tasks: java_deb.yml
+  when: ansible_os_family == "Debian"
+
+- name: Running java in Rhel
+  import_tasks: java_rpm.yml
+  when: ansible_os_family == "RedHat"
