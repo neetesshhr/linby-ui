@@ -13,6 +13,17 @@
       "matchPackagePatterns": ["eslint"],
       "labels": ["linting"]
     },
+       {
+      "description": "Trigger breaking release for major updates",
+      "matchPackageNames": [
+        "renovate/renovate",
+        "ghcr.io/renovatebot/renovate"
+      ],
+      "matchUpdateTypes": ["major"],
+      "semanticCommitType": "feat",
+      "commitBody": "BREAKING CHANGE: Major update",
+      "automergeType": "pr"
+    },
     {
       "matchPackagePatterns": ["docker"],
       "labels": ["docker-testlabel"]
